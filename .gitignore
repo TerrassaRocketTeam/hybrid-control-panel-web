@@ -1,0 +1,9 @@
+*.log
+*.map
+*.min.js
+node_modules/*
+public/scripts/main.js
+views/react/*
+.env
+*.hot-update.json
+*.hot-update.js

@@ -1,0 +1,16 @@
+# humanstxt.org/
+
+# The humans responsible & technology colophon
+
+
+# TEAM
+
+    Pep Rodeja Ferrer -- pep[at]interactivebcn.cat
+
+# THANKS
+
+    Eudald Serra -- per trobar-me la feina
+
+# TECHNOLOGY COLOPHON
+
+    HTML5, CSS3

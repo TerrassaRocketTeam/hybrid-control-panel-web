@@ -1,0 +1,85 @@
+<html lang="{{lang}}">
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# product: http://ogp.me/ns/product#">
+  <meta charset="UTF-8">
+
+  <title>{{pageinfo.title}}</title>
+  <meta name="description" content="{{pageinfo.description}}">
+  <meta name="keywords" content="{{pageinfo.keywords}}"/>
+
+  <link rel="author" href="/humans.txt">
+  <link rel="author" href="https://plus.google.com/100681230015369720570">
+
+  <meta property="fb:admins" content="1154899179" />
+
+  <meta property="og:description" content="{{pageinfo.description}}"/>
+  <meta property="og:type" content="product" />
+  <meta property="og:url" content="http://www.kibus.io" />
+  <meta property="og:title" content="{{pageinfo.name}}" />
+  <meta property="og:locale" content="{{lang}}" />
+
+  <meta id="viewport" name="viewport" content ="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1.0" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Product",
+    "name": "Factures",
+    "description": "This is a managing software",
+    "brand":
+    {
+      "@type" : "Organization",
+      "name" : "InteractiveBCN",
+      "url" : "http://www.interactivebcn.com",
+      "email": "info@interactivebcn.com",
+      "description": "InteractiveBCN som un grup de joves catalans que no només oferim apps i pàgines web fetes a mida, a més, també distribuïm Kibus: La millor manera de saber que pensen els clients del seu negoci",
+      "sameAs" : [
+        "https://www.linkedin.com/company/interactivebcn",
+        "https://plus.google.com/100681230015369720570"
+      ]
+    },
+    "sameAs": [
+      "https://www.facebook.com/kibus.surveys",
+      "https://plus.google.com/109223891024088652101"
+    ]
+  }
+  </script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #37474F;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    ::-webkit-scrollbar {
+      width: 12px;
+      height: 12px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.1);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.5);
+    }
+  </style>
+
+  <script>
+    window.__INITIAL_STATE__ = {{{react.body.initialState}}}
+  </script>
+
+  {{#if production}}
+  <script src="/scripts/main.min.js"></script>
+  {{else}}
+  <script src="/scripts/main.js"></script>
+  {{/if}}
+
+  <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500' rel='stylesheet' type='text/css'>
+
+</head>
+
+<body>
+  {{{body}}}
+</body>
+</html>
