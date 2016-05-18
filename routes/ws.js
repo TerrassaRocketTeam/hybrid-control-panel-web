@@ -29,13 +29,21 @@ module.exports = (io) => {
 
     socket.on('connectSerial', (data) => {
       if (checkUser(data.user).is && !sdp && data.comPort) {
-        sdp = new SerialDataProcess(data.comPort, () => {
-          emitStatus(io)
-          socket.emit('appError', { msg: 'Connection failed' })
-        }, emitStatus)
+        sdp = new SerialDataProcess(
+          data.comPort,
+          {
+            errorCb: () => {
+              emitStatus(io)
+              socket.emit('appError', { msg: 'Connection failed' })
+            },
+            emitStatus,
+            writeToFile: `data${(new Date()).toISOString()}.dat`,
+          }
+        )
 
         sdp.onData = (err, newData) => {
-          lastData = lastData.concat(newData)
+          lastData.push(newData)
+
           if (lastSendTime !== Math.floor((new Date()) / 100)) {
             lastSendTime = Math.floor((new Date()) / 100)
             io.emit('serialData',
@@ -73,16 +81,13 @@ module.exports = (io) => {
     })
 
     socket.on('launch', (data) => {
-      console.log('ready to launch')
       if (checkUser(data.user).is && !launching) {
-        console.log('start launch')
         launching = true
         timer = -10
         io.emit('timer', timer)
 
         timerObj = setInterval(() => {
           timer++
-          console.log('timer', timer)
           io.emit('timer', timer)
         }, 1000)
 
