@@ -11,6 +11,9 @@ import DataProcessor from './dataProcessor/DataProcessor'
 import AppBar from './interface/AppBar'
 import Controls from './controls/Controls'
 import Container from './container'
+import FloatingActionButton from 'material-ui/FloatingActionButton'
+import LockIcon from 'material-ui/svg-icons/action/lock'
+import UnLockIcon from 'material-ui/svg-icons/action/lock-open'
 
 // Actions
 import { handleStateChange } from '../actions/state'
@@ -47,17 +50,48 @@ class App extends React.Component {
     this.handleNewData = this.handleNewData.bind(this)
     this.handleLaunch = this.handleLaunch.bind(this)
     this.handleAbortLaunch = this.handleAbortLaunch.bind(this)
+    this.handleCntrlDown = this.handleCntrlDown.bind(this)
+    this.handleCntrlUp = this.handleCntrlUp.bind(this)
+    this.componentDidMount = this.componentDidMount.bind(this)
+    this.componentWillUnmount = this.componentWillUnmount.bind(this)
 
     this.state = {
       dp: new DataProcessor(this.props.handleStateChange, this.handleNewData),
       lastData: [],
+      contrlDown: false,
     }
+  }
+
+  componentDidMount () {
+    document.addEventListener('keydown', this.handleCntrlDown)
+    document.addEventListener('keyup', this.handleCntrlUp)
+  }
+
+  componentWillUnmount () {
+    document.removeEventListener('keydown', this.handleCntrlDown)
+    document.removeEventListener('keyup', this.handleCntrlUp)
   }
 
   handleNewData (data) {
     this.setState({
       lastData: data,
     })
+  }
+
+  handleCntrlDown (e) {
+    if (e.keyCode === 17 || typeof e.clientX !== 'undefined') {
+      this.setState({
+        contrlDown: true,
+      })
+    }
+  }
+
+  handleCntrlUp (e) {
+    if (e.keyCode === 17 || typeof e.clientX !== 'undefined') {
+      this.setState({
+        contrlDown: false,
+      })
+    }
   }
 
   handleConnectionStart (comPort) {
@@ -92,7 +126,22 @@ class App extends React.Component {
           lastData={this.state.lastData}
           handleLaunch={this.handleLaunch}
           handleAbortLaunch={this.handleAbortLaunch}
+          contrlDown={this.state.contrlDown}
         />
+        <div style={{ position: 'fixed', bottom: 10, right: 10 }}>
+          <div>
+            <FloatingActionButton
+              onClick={this.state.contrlDown ? this.handleCntrlUp : this.handleCntrlDown}
+            >
+              {(() => {
+                if (this.state.contrlDown) {
+                  return <UnLockIcon />
+                }
+                return <LockIcon />
+              })()}
+            </FloatingActionButton>
+          </div>
+        </div>
         <footer style={style.footer}>
           Built by <em>Terrassa Rocket Team</em>
         </footer>

@@ -36,6 +36,7 @@ const propTypes = {
   lastData: React.PropTypes.array.isRequired,
   handleLaunch: React.PropTypes.func.isRequired,
   handleAbortLaunch: React.PropTypes.func.isRequired,
+  contrlDown: React.PropTypes.bool.isRequired,
 }
 
 function mapStateToProps (state) { // eslint-disable-line no-unused-vars
@@ -67,40 +68,9 @@ class Controls extends React.Component {
     this.handleComDialogClose = this.handleComDialogClose.bind(this)
     this.handleComDialogOpen = this.handleComDialogOpen.bind(this)
     this.handleConnectionStart = this.handleConnectionStart.bind(this)
-    this.componentDidMount = this.componentDidMount.bind(this)
-    this.componentWillUnmount = this.componentWillUnmount.bind(this)
-    this.handleKeyDown = this.handleKeyDown.bind(this)
-    this.handleKeyUp = this.handleKeyUp.bind(this)
 
     this.state = {
       isSelectComDialogOpen: false,
-      contrlDown: false,
-    }
-  }
-
-  componentDidMount () {
-    document.addEventListener('keydown', this.handleKeyDown)
-    document.addEventListener('keyup', this.handleKeyUp)
-  }
-
-  componentWillUnmount () {
-    document.removeEventListener('keydown', this.handleKeyDown)
-    document.removeEventListener('keyup', this.handleKeyUp)
-  }
-
-  handleKeyDown (e) {
-    if (e.keyCode === 17) {
-      this.setState({
-        contrlDown: true,
-      })
-    }
-  }
-
-  handleKeyUp (e) {
-    if (e.keyCode === 17) {
-      this.setState({
-        contrlDown: false,
-      })
     }
   }
 
@@ -151,16 +121,16 @@ class Controls extends React.Component {
                 max={250}
               />
             </div>
-            <div style={style.column}>
+            <div style={Object.assign({}, style.column, { alignSelf: 'baseline' })}>
               <LaunchControls
                 loginState={this.props.login}
                 remote={this.props.remote}
-                contrlDown={this.state.contrlDown}
+                contrlDown={this.props.contrlDown}
                 handleLaunch={this.props.handleLaunch}
                 handleAbortLaunch={this.props.handleAbortLaunch}
               />
             </div>
-            <div style={style.column}>
+            <div style={style.column} >
               <Gauge
                 value={(this.props.lastData || [0, 0, 0])[2]}
                 title="Pressure"
@@ -170,24 +140,31 @@ class Controls extends React.Component {
               />
             </div>
             <div style={style.column}>
-              <StatusControls
-                loginState={this.props.login}
-                handleLogin={this.handleLogin}
-                handlePassChange={this.handlePassChange}
-                handleDialogClose={this.handleComDialogClose}
-                handleConnectionStart={this.handleConnectionStart}
-                handleDialogOpen={this.handleComDialogOpen}
-                isSelectComDialogOpen={this.state.isSelectComDialogOpen}
-                availablePorts={this.props.availablePorts}
-                selectedPort={this.props.selectedPort}
-                remote={this.props.remote}
-                handleDisconnectSerial={this.props.handleDisconnectSerial}
-                handleIgnitorCheck={this.props.handleIgnitorCheck}
+              <Gauge
+                value={(this.props.lastData || [0, 0, 0, 0])[3]}
+                title="Pressure"
+                units="bar"
+                min={0}
+                max={100}
               />
             </div>
           </div>
           <div style={style.horitzontalContainer}>
-            <div></div>
+            <StatusControls
+              contrlDown={this.props.contrlDown}
+              loginState={this.props.login}
+              handleLogin={this.handleLogin}
+              handlePassChange={this.handlePassChange}
+              handleDialogClose={this.handleComDialogClose}
+              handleConnectionStart={this.handleConnectionStart}
+              handleDialogOpen={this.handleComDialogOpen}
+              isSelectComDialogOpen={this.state.isSelectComDialogOpen}
+              availablePorts={this.props.availablePorts}
+              selectedPort={this.props.selectedPort}
+              remote={this.props.remote}
+              handleDisconnectSerial={this.props.handleDisconnectSerial}
+              handleIgnitorCheck={this.props.handleIgnitorCheck}
+            />
           </div>
         </Paper>
       </div>

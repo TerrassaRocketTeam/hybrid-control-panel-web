@@ -11,6 +11,7 @@ import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 
 // Styles
+import * as style from '../Controls.style'
 import * as thisStyle from './StatusControls.style'
 
 // Shapes
@@ -28,6 +29,7 @@ const propTypes = {
   remote: React.PropTypes.object,
   handleDisconnectSerial: React.PropTypes.func,
   handleIgnitorCheck: React.PropTypes.func,
+  contrlDown: React.PropTypes.bool,
 }
 
 function LaunchControls ({
@@ -43,6 +45,7 @@ function LaunchControls ({
   remote,
   handleDisconnectSerial,
   handleIgnitorCheck,
+  contrlDown,
 }) {
   const actions = [
     <FlatButton
@@ -59,99 +62,110 @@ function LaunchControls ({
   ]
 
   return (
-    <div>
-      <table style={thisStyle.table}>
-        <tbody>
-          <tr style={thisStyle.tableRow}>
-            <td style={thisStyle.leftCol}>Datalogger connection</td>
-            <td style={thisStyle.centerCol}>
-              <ColorCircle color={
-                (() => {
-                  if (remote.connectionStatus) {
-                    return '#0f0'
+    <div style={Object.assign({}, style.horitzontalContainer, { alignItems: 'top' })}>
+      <div style={style.column}>
+        <table style={thisStyle.table}>
+          <tbody>
+            <tr style={thisStyle.tableRow}>
+              <td style={thisStyle.leftCol}>Datalogger connection</td>
+              <td style={thisStyle.centerCol}>
+                <ColorCircle color={
+                  (() => {
+                    if (remote.connectionStatus) {
+                      return '#0f0'
+                    }
+                    return '#f00'
+                  })()}
+                />
+              </td>
+              <td style={thisStyle.rightCol}>
+                { remote.connectionStatus ? 'Connected' : 'Not connected' }
+                <button
+                  primary
+                  style={thisStyle.inlineBtn}
+                  disabled={!(loginState.success && contrlDown)}
+                  onClick={remote.connectionStatus ? // eslint-disable-line
+                    (contrlDown ? handleDisconnectSerial : undefined)
+                    : handleDialogOpen
                   }
-                  return '#f00'
-                })()}
-              />
-            </td>
-            <td style={thisStyle.rightCol}>
-              { remote.connectionStatus ? 'Connected' : 'Not connected' }
-              <button
-                primary
-                style={thisStyle.inlineBtn}
-                disabled={!loginState.success}
-                onClick={remote.connectionStatus ? handleDisconnectSerial : handleDialogOpen}
-              >
-                { remote.connectionStatus ? 'Disconnect' : 'Connect' }
-              </button>
-            </td>
-          </tr>
-          <tr style={thisStyle.tableRow}>
-            <td style={thisStyle.leftCol}>Pressure sensor 1</td>
-            <td style={thisStyle.centerCol}><ColorCircle color="#f00" /></td>
-            <td style={thisStyle.rightCol}>Not working</td>
-          </tr>
-          <tr style={thisStyle.tableRow}>
-            <td style={thisStyle.leftCol}>Pressure sensor 2</td>
-            <td style={thisStyle.centerCol}><ColorCircle color="#f00" /></td>
-            <td style={thisStyle.rightCol}>Not working</td>
-          </tr>
-          <tr style={thisStyle.tableRow}>
-            <td style={thisStyle.leftCol}>Electrovavle</td>
-            <td style={thisStyle.centerCol}><ColorCircle color="#f00" /></td>
-            <td style={thisStyle.rightCol}>Not working</td>
-          </tr>
-          <tr style={thisStyle.tableRow}>
-            <td style={thisStyle.leftCol}>Ignitor continuity</td>
-            <td style={thisStyle.centerCol}>
-              <ColorCircle color={remote.ignitorChecked ? '#0f0' : '#ff0'} />
-            </td>
-            <td style={thisStyle.rightCol}>
-              {remote.ignitorChecked ? 'Working' : 'Not checked'}
-              <button
-                disabled={!loginState.success}
-                primary
-                style={thisStyle.inlineBtn}
-                onClick={handleIgnitorCheck}
-              >
-                Check
-              </button>
-            </td>
-          </tr>
-          <tr style={thisStyle.tableRow}>
-            <td style={thisStyle.leftCol}>Authoritzation status</td>
-            <td style={thisStyle.centerCol}>
-              <ColorCircle color={loginState.success ? '#0f0' : '#f00'} />
-            </td>
-            <td style={thisStyle.rightCol}>{
-              loginState.success ? 'Authorized' : 'Not Authorized'
-            }</td>
-          </tr>
-          <tr style={thisStyle.tableRow}>
-            <td style={thisStyle.leftCol}>Launcher Status</td>
-            <td style={thisStyle.centerCol}><ColorCircle color="#f00" /></td>
-            <td style={thisStyle.rightCol}>No Pressure</td>
-          </tr>
-          <tr style={thisStyle.tableRow}>
-            <td colSpan="2" style={thisStyle.leftCol}>
-              <TextField
-                floatingLabelText="Password" type="password" style={{ width: 150 }}
-                onChange={handlePassChange}
-                errorText={loginState.msg}
-                value={loginState.current}
-                disabled={loginState.success}
-              />
-            </td>
-            <td style={thisStyle.rightCol}>
-              <RaisedButton
-                secondary label={loginState.success ? 'Revoke Auth' : 'Request Auth'}
-                style={{ marginTop: 20 }}
-                onClick={handleLogin}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                >
+                  { remote.connectionStatus ? 'Disconnect' : 'Connect' }
+                </button>
+              </td>
+            </tr>
+            <tr style={thisStyle.tableRow}>
+              <td style={thisStyle.leftCol}>Launcher Status</td>
+              <td style={thisStyle.centerCol}><ColorCircle color="#f00" /></td>
+              <td style={thisStyle.rightCol}>No Pressure</td>
+            </tr>
+            <tr style={thisStyle.tableRow}>
+              <td style={thisStyle.leftCol}>Authoritzation status</td>
+              <td style={thisStyle.centerCol}>
+                <ColorCircle color={loginState.success ? '#0f0' : '#f00'} />
+              </td>
+              <td style={thisStyle.rightCol}>{
+                loginState.success ? 'Authorized' : 'Not Authorized'
+              }</td>
+            </tr>
+            <tr style={thisStyle.tableRow}>
+              <td colSpan="2" style={thisStyle.leftCol}>
+                <TextField
+                  floatingLabelText="Password" type="password" style={{ width: 150 }}
+                  onChange={handlePassChange}
+                  errorText={loginState.msg}
+                  value={loginState.current}
+                  disabled={loginState.success}
+                />
+              </td>
+              <td style={thisStyle.rightCol}>
+                <RaisedButton
+                  secondary label={loginState.success ? 'Revoke Auth' : 'Request Auth'}
+                  style={{ marginTop: 20 }}
+                  onClick={handleLogin}
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style={style.column}>
+        <table style={thisStyle.table}>
+          <tbody>
+            <tr style={thisStyle.tableRow}>
+              <td style={thisStyle.leftCol}>Pressure sensor 1</td>
+              <td style={thisStyle.centerCol}><ColorCircle color="#f00" /></td>
+              <td style={thisStyle.rightCol}>Not working</td>
+            </tr>
+            <tr style={thisStyle.tableRow}>
+              <td style={thisStyle.leftCol}>Pressure sensor 2</td>
+              <td style={thisStyle.centerCol}><ColorCircle color="#f00" /></td>
+              <td style={thisStyle.rightCol}>Not working</td>
+            </tr>
+            <tr style={thisStyle.tableRow}>
+              <td style={thisStyle.leftCol}>Electrovavle</td>
+              <td style={thisStyle.centerCol}><ColorCircle color="#f00" /></td>
+              <td style={thisStyle.rightCol}>Not working</td>
+            </tr>
+            <tr style={thisStyle.tableRow}>
+              <td style={thisStyle.leftCol}>Ignitor continuity</td>
+              <td style={thisStyle.centerCol}>
+                <ColorCircle color={remote.ignitorChecked ? '#0f0' : '#ff0'} />
+              </td>
+              <td style={thisStyle.rightCol}>
+                {remote.ignitorChecked ? 'Working' : 'Not checked'}
+                <button
+                  disabled={!loginState.success}
+                  primary
+                  style={thisStyle.inlineBtn}
+                  onClick={handleIgnitorCheck}
+                >
+                  Check
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <Dialog
         title="Select a COM port"
         actions={actions}
