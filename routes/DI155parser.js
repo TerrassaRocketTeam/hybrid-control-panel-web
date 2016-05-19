@@ -4,10 +4,32 @@
 const stream = require('stream')
 
 module.exports = function DI155Parser (
-  sampleRate, digitalChannel, ignitorTreshold, emitStatus, resultLength, pos,
+  sampleRate, digitalChannel, ignitorTreshold, emitStatus, resultLength, gainRaw,
   ignitorChecked, checkIgnitor, lastTime, setLastTime
 ) {
   let time = lastTime
+  const gain = gainRaw.map((g) => {
+    switch (g) {
+      case '000':
+        return 1
+      case '001':
+        return 2
+      case '010':
+        return 4
+      case '011':
+        return 5
+      case '100':
+        return 8
+      case '101':
+        return 10
+      case '110':
+        return 16
+      case '111':
+        return 20
+      default:
+        return 1
+    }
+  })
 
   const parser = new stream.Transform({ objectMode: true })
   parser._transform = function praserFunction (chunk, encoding, done) {
@@ -29,10 +51,11 @@ module.exports = function DI155Parser (
           final.push(this.elem)
         }
         this.elem = [time]
-        time += 1 / (sampleRate * pos.length)
+        time += 1 / (sampleRate * gain.length)
         setLastTime(time)
         this.isFirstPart = true
         this.col = 1
+        this.input = 0
       }
       if (this.isFirstPart === true) {
         this.previous = current
@@ -54,6 +77,7 @@ module.exports = function DI155Parser (
             // Numero negatiu (bit mes significatiu es 1 [esta invertit])
             this.elem[this.col] = 128 * (current + 64) + this.previous - 16383 // eslint-disable-line
           }
+          this.elem[this.col] = (50 / gain[this.input]) * (this.elem[this.col] / 8192)
           if (
             Math.abs(this.elem[this.col]) > ignitorTreshold &&
             !ignitorChecked
@@ -62,6 +86,7 @@ module.exports = function DI155Parser (
             emitStatus()
           }
         }
+        this.input++
         this.col++
         this.previous = undefined
         this.isFirstPart = true

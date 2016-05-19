@@ -13,7 +13,7 @@ module.exports = function SerialDataProcess (comPort, options) {
   const writeToFile = options.writeToFile
 
   /* Configuration */
-  const gain = ['000', '000', '000', '000'] // Gain for each channel
+  const gain = ['011', '000', '000', '000'] // Gain for each channel
   const pos = ['0000', '0001', '0010', '0011'] // Number of the channel
   const sampleRate = 10 // Hz per channel
   const ignitorTreshold = 1500
@@ -34,7 +34,7 @@ module.exports = function SerialDataProcess (comPort, options) {
   const setLastTime = (val) => { this.lastTime = val }
 
   const dparser = dI155parser(
-    sampleRate, digitalChannel, ignitorTreshold, emitStatus, resultLength, pos,
+    sampleRate, digitalChannel, ignitorTreshold, emitStatus, resultLength, gain,
     this.ignitorChecked, checkIgnitor, this.lastTime, setLastTime
   )
 
@@ -108,6 +108,18 @@ module.exports = function SerialDataProcess (comPort, options) {
     done()
   }
 
+  // This transform sends the data to the callback, then we continue the pipe to save it to the file
+  const calibrator = new stream.Transform({ objectMode: true })
+  calibrator._transform = function senderFunction (chunk, encoding, done) {
+    this.push(chunk.map((item, i) => {
+      if (i === 1) {
+        return 2226.5759 * item - 105.586
+      }
+      return item
+    }))
+    done()
+  }
+
   const writeStream = fs.createWriteStream(
     `${__dirname}/../data/${writeToFile.replace('.', '-').replace(':', '-').replace(':', '-')}`
   )
@@ -117,7 +129,8 @@ module.exports = function SerialDataProcess (comPort, options) {
     counter++
     if (counter === 2) {
       this.s.pipe(dparser)
-      dparser.pipe(sender)
+      dparser.pipe(calibrator)
+      calibrator.pipe(sender)
       sender.pipe(writeStream)
       this.initateSerialConnection()
     }
