@@ -114,7 +114,7 @@ class Controls extends React.Component {
           <div style={style.horitzontalContainer}>
             <div style={style.column}>
               <Gauge
-                value={(this.props.lastData || [0, 0])[1]}
+                value={(this.props.lastData || [0, 0, 0, 0])[3]}
                 title="Load"
                 units="N"
                 min={0}
@@ -132,7 +132,7 @@ class Controls extends React.Component {
             </div>
             <div style={style.column} >
               <Gauge
-                value={(this.props.lastData || [0, 0, 0])[2]}
+                value={(this.props.lastData || [0, 0])[1]}
                 title="Pressure"
                 units="bar"
                 min={0}
@@ -141,7 +141,7 @@ class Controls extends React.Component {
             </div>
             <div style={style.column}>
               <Gauge
-                value={(this.props.lastData || [0, 0, 0, 0])[3]}
+                value={(this.props.lastData || [0, 0, 0])[2]}
                 title="Pressure"
                 units="bar"
                 min={0}

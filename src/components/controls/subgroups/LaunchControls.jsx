@@ -38,7 +38,10 @@ function LaunchControls ({ loginState, remote, contrlDown, handleLaunch, handleA
         <RaisedButton
           primary
           disabled={
-            !(loginState.success && remote.connectionStatus && (contrlDown || remote.launching))
+            !(
+              loginState.success && remote.connectionStatus &&
+              remote.ignitorChecked && (contrlDown || remote.launching)
+            )
           }
           label={remote.launching ? 'Abort' : 'Launch'}
           style={style.btn}
@@ -46,9 +49,13 @@ function LaunchControls ({ loginState, remote, contrlDown, handleLaunch, handleA
         />
         <span style={thisStyle.comment}>
           {(() => {
-            if (loginState.success && remote.connectionStatus && contrlDown) {
+            if (
+              loginState.success && remote.connectionStatus && contrlDown && remote.ignitorChecked
+            ) {
               return ''
-            } else if (loginState.success && remote.connectionStatus) {
+            } else if (!remote.ignitorChecked) {
+              return '(Ignitor not checked)'
+            } else if (!contrlDown) {
               return '(Keep control down)'
             } else if (loginState.success) {
               return '(Not connected)'

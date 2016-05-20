@@ -13,7 +13,11 @@ module.exports = function SerialDataProcess (comPort, options) {
   const writeToFile = options.writeToFile
 
   /* Configuration */
-  const gain = ['011', '000', '000', '000'] // Gain for each channel
+  // 1 -> Pressure 1
+  // 2 -> Pressure 2
+  // 3 -> Load
+  // 4 -> Continuity
+  const gain = ['100', '100', '011', '000'] // Gain for each channel
   const pos = ['0000', '0001', '0010', '0011'] // Number of the channel
   const sampleRate = 10 // Hz per channel
   const ignitorTreshold = 1500
@@ -113,15 +117,19 @@ module.exports = function SerialDataProcess (comPort, options) {
   calibrator._transform = function senderFunction (chunk, encoding, done) {
     this.push(chunk.map((item, i) => {
       if (i === 1) {
-        return 2226.5759 * item - 105.586
+        return 21.842709579 * item
+      } else if (i === 2) {
+        return item
+      } else if (i === 3) {
+        return item
       }
       return item
     }))
     done()
   }
 
-  const writeStream = fs.createWriteStream(
-    `${__dirname}/../data/${writeToFile.replace('.', '-').replace(':', '-').replace(':', '-')}`
+  const calibratedFile = fs.createWriteStream(
+    `${__dirname}/../data/data-${writeToFile.replace('.', '-').replace(':', '-').replace(':', '-')}`
   )
 
   let counter = 0
@@ -131,12 +139,12 @@ module.exports = function SerialDataProcess (comPort, options) {
       this.s.pipe(dparser)
       dparser.pipe(calibrator)
       calibrator.pipe(sender)
-      sender.pipe(writeStream)
+      sender.pipe(calibratedFile)
       this.initateSerialConnection()
     }
   }
 
-  writeStream.on('open', checkIfReadyToStart)
+  calibratedFile.on('open', checkIfReadyToStart)
   this.s.on('open', checkIfReadyToStart)
 
   this.isOpen = this.s.isOpen
