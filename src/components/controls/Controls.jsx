@@ -8,6 +8,7 @@ import Paper from 'material-ui/Paper'
 import LaunchControls from './subgroups/LaunchControls'
 import StatusControls from './subgroups/StatusControls'
 import Gauge from './subgroups/Gauge'
+import RaisedButton from 'material-ui/RaisedButton'
 
 // Actions
 import {
@@ -37,6 +38,7 @@ const propTypes = {
   handleLaunch: React.PropTypes.func.isRequired,
   handleAbortLaunch: React.PropTypes.func.isRequired,
   contrlDown: React.PropTypes.bool.isRequired,
+  handleTare: React.PropTypes.func.isRequired,
 }
 
 function mapStateToProps (state) { // eslint-disable-line no-unused-vars
@@ -119,6 +121,11 @@ class Controls extends React.Component {
                 units="N"
                 min={0}
                 max={250}
+              />
+              <RaisedButton
+                secondary label={ 'Tare' }
+                style={{ marginBottom: 20 }}
+                onClick={this.props.handleTare}
               />
             </div>
             <div style={Object.assign({}, style.column, { alignSelf: 'baseline' })}>

@@ -54,6 +54,10 @@ class DataProcessor {
   abortLaunch (user) {
     this.ws.emit('abortLaunch', { user })
   }
+
+  tare (user, port) {
+    this.ws.emit('tare', { user, port })
+  }
 }
 
 export default DataProcessor

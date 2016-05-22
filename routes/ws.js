@@ -112,6 +112,16 @@ module.exports = (io) => {
       }
     })
 
+    socket.on('tare', (data) => {
+      if (checkUser(data.user).is && sdp) {
+        sdp.handleTare(data.port)
+      } else if (!sdp) {
+        socket.emit('appError', { msg: 'Not connected' })
+      } else {
+        socket.emit('appError', { msg: 'Not authorized' })
+      }
+    })
+
     socket.on('openValve', (data) => {
       if (checkUser(data.user).is) {
         

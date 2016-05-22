@@ -54,6 +54,7 @@ class App extends React.Component {
     this.handleCntrlUp = this.handleCntrlUp.bind(this)
     this.componentDidMount = this.componentDidMount.bind(this)
     this.componentWillUnmount = this.componentWillUnmount.bind(this)
+    this.handleTare = this.handleTare.bind(this)
 
     this.state = {
       dp: new DataProcessor(this.props.handleStateChange, this.handleNewData),
@@ -115,6 +116,10 @@ class App extends React.Component {
     this.state.dp.abortLaunch(this.props.user)
   }
 
+  handleTare () {
+    this.state.dp.tare(this.props.user, 3)
+  }
+
   render () {
     return (
       <Container>
@@ -127,6 +132,7 @@ class App extends React.Component {
           handleLaunch={this.handleLaunch}
           handleAbortLaunch={this.handleAbortLaunch}
           contrlDown={this.state.contrlDown}
+          handleTare={this.handleTare}
         />
         <div style={{ position: 'fixed', bottom: 10, right: 10 }}>
           <div>

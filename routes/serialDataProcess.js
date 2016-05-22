@@ -31,6 +31,7 @@ module.exports = function SerialDataProcess (comPort, options) {
   this.lastTime = 0
   this.data = []
   this.ignitorChecked = false
+  this.tare = [0, 0, 0, 0]
 
   const self = this
 
@@ -99,6 +100,26 @@ module.exports = function SerialDataProcess (comPort, options) {
     this.updateDigitalOutState()
   }
 
+  this.handleTare = (port) => {
+    this.tare[port - 1] = this.data[this.data.length - 1][port]
+  }
+
+  // This transform sends the data to the callback, then we continue the pipe to save it to the file
+  const calibrator = new stream.Transform({ objectMode: true })
+  calibrator._transform = function senderFunction (chunk, encoding, done) {
+    this.push(chunk.map((item, i) => {
+      if (i === 1) {
+        return item + self.tare[0]
+      } else if (i === 2) {
+        return item + self.tare[1]
+      } else if (i === 3) {
+        return 21.842709579 * item + self.tare[2]
+      }
+      return item
+    }))
+    done()
+  }
+
   // This transform sends the data to the callback, then we continue the pipe to save it to the file
   const sender = new stream.Transform({ objectMode: true })
   sender._transform = function senderFunction (chunk, encoding, done) {
@@ -109,22 +130,6 @@ module.exports = function SerialDataProcess (comPort, options) {
     }
 
     this.push(`${chunk.join('\t')}\n`)
-    done()
-  }
-
-  // This transform sends the data to the callback, then we continue the pipe to save it to the file
-  const calibrator = new stream.Transform({ objectMode: true })
-  calibrator._transform = function senderFunction (chunk, encoding, done) {
-    this.push(chunk.map((item, i) => {
-      if (i === 1) {
-        return 21.842709579 * item
-      } else if (i === 2) {
-        return item
-      } else if (i === 3) {
-        return item
-      }
-      return item
-    }))
     done()
   }
 
