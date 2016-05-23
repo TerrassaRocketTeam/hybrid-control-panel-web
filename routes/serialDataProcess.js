@@ -20,7 +20,7 @@ module.exports = function SerialDataProcess (comPort, options) {
   const gain = ['100', '100', '011', '000'] // Gain for each channel
   const pos = ['0000', '0001', '0010', '0011'] // Number of the channel
   const sampleRate = 10 // Hz per channel
-  const ignitorTreshold = 1500
+  const ignitorTreshold = 5
   /* Finish configuration */
 
   // Configuration derivate calculations
@@ -101,7 +101,7 @@ module.exports = function SerialDataProcess (comPort, options) {
   }
 
   this.handleTare = (port) => {
-    this.tare[port - 1] = this.data[this.data.length - 1][port]
+    this.tare[port - 1] = this.data[this.data.length - 1][port] + self.tare[port - 1]
   }
 
   // This transform sends the data to the callback, then we continue the pipe to save it to the file
@@ -109,11 +109,11 @@ module.exports = function SerialDataProcess (comPort, options) {
   calibrator._transform = function senderFunction (chunk, encoding, done) {
     this.push(chunk.map((item, i) => {
       if (i === 1) {
-        return item + self.tare[0]
+        return item * (140 / 9.974) + 0.008 - self.tare[0] // D107
       } else if (i === 2) {
-        return item + self.tare[1]
+        return item * (140 / 9.981) + 0.012 - self.tare[1] // D105
       } else if (i === 3) {
-        return 21.842709579 * item + self.tare[2]
+        return 21.842709579 * item - self.tare[2]
       }
       return item
     }))

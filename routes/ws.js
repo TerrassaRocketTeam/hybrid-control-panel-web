@@ -9,7 +9,7 @@ module.exports = (io) => {
   let lastSendTime = Math.floor((new Date()) / 100)
   let lastData = []
   let launching = false
-  let timer = -10
+  let timer = -5
   let timerObj
 
   function emitStatus (socket) {
@@ -83,11 +83,16 @@ module.exports = (io) => {
     socket.on('launch', (data) => {
       if (checkUser(data.user).is && !launching) {
         launching = true
-        timer = -10
+        timer = -5
         io.emit('timer', timer)
 
         timerObj = setInterval(() => {
           timer++
+          if (timer >= 0 && timer < 4) {
+            sdp.activateDigitalOut(2)
+          } else {
+            sdp.deactivateDigitalOut(2)
+          }
           io.emit('timer', timer)
         }, 1000)
 
@@ -103,6 +108,7 @@ module.exports = (io) => {
       if (checkUser(data.user).is && launching) {
         launching = false
         clearInterval(timerObj)
+        sdp.deactivateDigitalOut(2)
 
         emitStatus(io)
       } else if (!launching) {

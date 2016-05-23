@@ -133,13 +133,13 @@ function LaunchControls ({
           <tbody>
             <tr style={thisStyle.tableRow}>
               <td style={thisStyle.leftCol}>Pressure sensor 1</td>
-              <td style={thisStyle.centerCol}><ColorCircle color="#f00" /></td>
-              <td style={thisStyle.rightCol}>Not working</td>
+              <td style={thisStyle.centerCol}><ColorCircle color="#ff0" /></td>
+              <td style={thisStyle.rightCol}>Maybe works</td>
             </tr>
             <tr style={thisStyle.tableRow}>
               <td style={thisStyle.leftCol}>Pressure sensor 2</td>
-              <td style={thisStyle.centerCol}><ColorCircle color="#f00" /></td>
-              <td style={thisStyle.rightCol}>Not working</td>
+              <td style={thisStyle.centerCol}><ColorCircle color="#ff0" /></td>
+              <td style={thisStyle.rightCol}>Maybe works</td>
             </tr>
             <tr style={thisStyle.tableRow}>
               <td style={thisStyle.leftCol}>Electrovavle</td>

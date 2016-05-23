@@ -80,9 +80,10 @@ module.exports = function DI155Parser (
           this.elem[this.col] = (50 / gain[this.input]) * (this.elem[this.col] / 8192)
           if (
             Math.abs(this.elem[this.col]) > ignitorTreshold &&
-            !ignitorChecked
+            !ignitorChecked &&
+            this.col === 4
           ) {
-            checkIgnitor()
+            checkIgnitor(true)
             emitStatus()
           }
         }
