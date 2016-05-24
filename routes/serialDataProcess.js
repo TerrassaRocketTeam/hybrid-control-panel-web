@@ -109,13 +109,13 @@ module.exports = function SerialDataProcess (comPort, options) {
   calibrator._transform = function senderFunction (chunk, encoding, done) {
     this.push(chunk.map((item, i) => {
       if (i === 1) {
-        return item * (140 / 9.974) + 0.008 - self.tare[0] // D107
+        return Math.round((item * (140 / 9.974) + 0.008 - self.tare[0]) * 10000) / 10000 // D107
       } else if (i === 2) {
-        return item * (140 / 9.981) + 0.012 - self.tare[1] // D105
+        return Math.round((item * (140 / 9.981) + 0.012 - self.tare[1]) * 10000) / 10000 // D105
       } else if (i === 3) {
-        return 21.842709579 * item - self.tare[2]
+        return Math.round((21.842709579 * item - self.tare[2]) * 10000) / 10000
       }
-      return item
+      return Math.round((item) * 10000) / 10000
     }))
     done()
   }
