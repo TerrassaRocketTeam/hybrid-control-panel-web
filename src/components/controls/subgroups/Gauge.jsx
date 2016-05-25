@@ -98,6 +98,7 @@ class Guage extends React.Component {
         series: [{
           name: this.props.title,
           data: [props.value || 0],
+          animation: false,
           tooltip: {
             valueSuffix: ` ${this.props.units}`,
           },
