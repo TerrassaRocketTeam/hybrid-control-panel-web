@@ -19,7 +19,7 @@ module.exports = function SerialDataProcess (comPort, options) {
   // 4 -> Continuity
   const gain = ['100', '100', '011', '000'] // Gain for each channel
   const pos = ['0000', '0001', '0010', '0011'] // Number of the channel
-  const sampleRate = 10 // Hz per channel
+  const sampleRate = 500 // Hz per channel
   const ignitorTreshold = 5
   /* Finish configuration */
 
