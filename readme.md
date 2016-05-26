@@ -19,7 +19,9 @@ valve and reading data from all sensors
 
 ##### Software needed
 - 1. Install Node.js from [here](https://nodejs.org/en/download/)
-- 2. If you are on windows, install the usb drivers from [here](link)
+- 2. Drivers: 
+  - If you are on windows, install the usb drivers from [here](http://www.dataq.com/145/145usbdriver.EXE)
+  - If you are linux, install acm or usbserial
 
 ##### Download and install the program
 - 3. Download this program with git or as a zip
