@@ -16,9 +16,14 @@ const propTypes = {
   contrlDown: React.PropTypes.bool.isRequired,
   handleLaunch: React.PropTypes.func.isRequired,
   handleAbortLaunch: React.PropTypes.func.isRequired,
+  handleOpenValve: React.PropTypes.func.isRequired,
+  handleCloseValve: React.PropTypes.func.isRequired,
 }
 
-function LaunchControls ({ loginState, remote, contrlDown, handleLaunch, handleAbortLaunch }) {
+function LaunchControls ({
+    loginState, remote, contrlDown, handleLaunch, handleAbortLaunch,
+    handleOpenValve, handleCloseValve,
+  }) {
   return (
     <div>
       <h2 style={thisStyle.time}>Time</h2>
@@ -29,8 +34,11 @@ function LaunchControls ({ loginState, remote, contrlDown, handleLaunch, handleA
       <div style={Object.assign({}, thisStyle.btn, thisStyle.topBtn)}>
         <RaisedButton
           primary
-          disabled={!(loginState.success && remote.connectionStatus && contrlDown)}
-          label="Open Valve"
+          disabled={!(
+            loginState.success && remote.connectionStatus && contrlDown // && !remote.launching
+          )}
+          label={remote.valveOpened ? 'Close valve' : 'Open Valve'}
+          onClick={remote.launching ? handleCloseValve : handleOpenValve}
           style={style.btn}
         />
       </div>

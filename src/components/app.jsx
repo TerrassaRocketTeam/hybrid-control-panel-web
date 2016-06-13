@@ -55,9 +55,12 @@ class App extends React.Component {
     this.componentDidMount = this.componentDidMount.bind(this)
     this.componentWillUnmount = this.componentWillUnmount.bind(this)
     this.handleTare = this.handleTare.bind(this)
+    this.handleOpenValve = this.handleOpenValve.bind(this)
+    this.handleCloseValve = this.handleCloseValve.bind(this)
+
+    this.dp = new DataProcessor(this.props.handleStateChange, this.handleNewData)
 
     this.state = {
-      dp: new DataProcessor(this.props.handleStateChange, this.handleNewData),
       lastData: [],
       contrlDown: false,
     }
@@ -96,28 +99,36 @@ class App extends React.Component {
   }
 
   handleConnectionStart (comPort) {
-    this.state.dp.connect(comPort, this.props.user)
+    this.dp.connect(comPort, this.props.user)
   }
 
   handleDisconnectSerial () {
-    this.state.dp.disconnect(this.props.user)
+    this.dp.disconnect(this.props.user)
   }
 
   handleIgnitorCheck () {
     this.props.handleStateChange('ignitorChecked', undefined)
-    this.state.dp.checkIgnitor(this.props.user)
+    this.dp.checkIgnitor(this.props.user)
   }
 
   handleLaunch () {
-    this.state.dp.launch(this.props.user)
+    this.dp.launch(this.props.user)
   }
 
   handleAbortLaunch () {
-    this.state.dp.abortLaunch(this.props.user)
+    this.dp.abortLaunch(this.props.user)
   }
 
   handleTare () {
-    this.state.dp.tare(this.props.user, 3)
+    this.dp.tare(this.props.user, 3)
+  }
+
+  handleOpenValve () {
+    this.dp.openValve(this.props.user)
+  }
+
+  handleCloseValve () {
+    this.dp.closeValve(this.props.user)
   }
 
   render () {
@@ -133,6 +144,8 @@ class App extends React.Component {
           handleAbortLaunch={this.handleAbortLaunch}
           contrlDown={this.state.contrlDown}
           handleTare={this.handleTare}
+          handleOpenValve={this.handleOpenValve}
+          handleCloseValve={this.handleCloseValve}
         />
         <div style={{ position: 'fixed', bottom: 10, right: 10 }}>
           <div>

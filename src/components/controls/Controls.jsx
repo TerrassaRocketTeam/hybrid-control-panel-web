@@ -39,6 +39,8 @@ const propTypes = {
   handleAbortLaunch: React.PropTypes.func.isRequired,
   contrlDown: React.PropTypes.bool.isRequired,
   handleTare: React.PropTypes.func.isRequired,
+  handleOpenValve: React.PropTypes.func.isRequired,
+  handleCloseValve: React.PropTypes.func.isRequired,
 }
 
 function mapStateToProps (state) { // eslint-disable-line no-unused-vars
@@ -135,6 +137,8 @@ class Controls extends React.Component {
                 contrlDown={this.props.contrlDown}
                 handleLaunch={this.props.handleLaunch}
                 handleAbortLaunch={this.props.handleAbortLaunch}
+                handleOpenValve={this.props.handleOpenValve}
+                handleCloseValve={this.props.handleCloseValve}
               />
             </div>
             <div style={style.column} >

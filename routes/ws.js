@@ -11,12 +11,14 @@ module.exports = (io) => {
   let launching = false
   let timer = -5
   let timerObj
+  let valveOpened = false
 
   function emitStatus (socket) {
     (socket || io).emit('status',
       {
         connected: !!sdp && sdp.isOpen(),
         ignitorChecked: sdp && sdp.ignitorChecked,
+        valveOpened,
         launching,
         timer,
       }
@@ -130,7 +132,14 @@ module.exports = (io) => {
 
     socket.on('openValve', (data) => {
       if (checkUser(data.user).is) {
-        
+        sdp.activateDigitalOut(3)
+        setTimeout(() => {
+          sdp.deactivateDigitalOut(3)
+          valveOpened = false
+          emitStatus(io)
+        }, 2000)
+        valveOpened = true
+        emitStatus(io)
       } else {
         socket.emit('appError', { msg: 'Not authorized' })
       }
@@ -138,7 +147,9 @@ module.exports = (io) => {
 
     socket.on('closeValve', (data) => {
       if (checkUser(data.user).is) {
-        
+        sdp.deactivateDigitalOut(3)
+        emitStatus(io)
+        valveOpened = false
       } else {
         socket.emit('appError', { msg: 'Not authorized' })
       }
@@ -149,7 +160,7 @@ module.exports = (io) => {
         sdp.activateDigitalOut(1)
         setTimeout(() => {
           sdp.deactivateDigitalOut(1)
-        }, 3000)
+        }, 2000)
       } else {
         socket.emit('appError', { msg: 'Not authorized' })
       }

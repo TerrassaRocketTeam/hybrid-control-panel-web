@@ -10,9 +10,11 @@ class DataProcessor {
 
     // Start the connection when ready
     this.ws.on('status', (data) => {
+      console.log('new Status')
       this.handler('connectionStatus', data.connected)
       this.handler('ignitorChecked', data.ignitorChecked)
       this.handler('launching', data.launching)
+      this.handler('valveOpened', data.valveOpened)
       this.handler('timer', data.timer)
     })
 
@@ -57,6 +59,14 @@ class DataProcessor {
 
   tare (user, port) {
     this.ws.emit('tare', { user, port })
+  }
+
+  openValve (user) {
+    this.ws.emit('openValve', { user })
+  }
+
+  closeValve (user) {
+    this.ws.emit('closeValve', { user })
   }
 }
 

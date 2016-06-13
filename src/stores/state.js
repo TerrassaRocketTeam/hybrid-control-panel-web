@@ -17,6 +17,7 @@ const defaultState = {
     connectionStatus: false,
     lastData: undefined,
     ignitorChecked: false,
+    valveOpened: false,
     launching: false,
     timer: -10,
   },
