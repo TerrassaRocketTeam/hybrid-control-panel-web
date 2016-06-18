@@ -44,7 +44,7 @@ function LaunchControls ({
   selectedPort,
   remote,
   handleDisconnectSerial,
-  handleIgnitorCheck,
+  // handleIgnitorCheck,
   contrlDown,
 }) {
   const actions = [
@@ -143,24 +143,16 @@ function LaunchControls ({
             </tr>
             <tr style={thisStyle.tableRow}>
               <td style={thisStyle.leftCol}>Electrovavle</td>
-              <td style={thisStyle.centerCol}><ColorCircle color="#f00" /></td>
-              <td style={thisStyle.rightCol}>Not working</td>
+              <td style={thisStyle.centerCol}><ColorCircle color="#ff0" /></td>
+              <td style={thisStyle.rightCol}>Maybe works</td>
             </tr>
             <tr style={thisStyle.tableRow}>
               <td style={thisStyle.leftCol}>Ignitor continuity</td>
               <td style={thisStyle.centerCol}>
-                <ColorCircle color={remote.ignitorChecked ? '#0f0' : '#ff0'} />
+                <ColorCircle color={remote.ignitorChecked ? '#0f0' : '#f00'} />
               </td>
               <td style={thisStyle.rightCol}>
-                {remote.ignitorChecked ? 'Working' : 'Not checked'}
-                <button
-                  disabled={!loginState.success}
-                  primary
-                  style={thisStyle.inlineBtn}
-                  onClick={handleIgnitorCheck}
-                >
-                  Check
-                </button>
+                {remote.ignitorChecked ? 'Working' : 'Not working'}
               </td>
             </tr>
           </tbody>

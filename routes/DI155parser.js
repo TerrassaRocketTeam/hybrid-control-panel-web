@@ -5,7 +5,7 @@ const stream = require('stream')
 
 module.exports = function DI155Parser (
   sampleRate, digitalChannel, ignitorTreshold, emitStatus, resultLength, gainRaw,
-  ignitorChecked, checkIgnitor, lastTime, setLastTime
+  ignitorChecked, checkIgnitor, lastTime, setLastTime, checkLaunching
 ) {
   let time = lastTime
   const gain = gainRaw.map((g) => {
@@ -80,10 +80,19 @@ module.exports = function DI155Parser (
           this.elem[this.col] = (50 / gain[this.input]) * (this.elem[this.col] / 8192)
           if (
             Math.abs(this.elem[this.col]) > ignitorTreshold &&
-            !ignitorChecked &&
-            this.col === 4
+            !ignitorChecked() &&
+            this.col === 4 &&
+            checkLaunching() === false
           ) {
             checkIgnitor(true)
+            emitStatus()
+          } else if (
+            Math.abs(this.elem[this.col]) < ignitorTreshold &&
+            ignitorChecked() &&
+            this.col === 4 &&
+            checkLaunching() === false
+          ) {
+            checkIgnitor(false)
             emitStatus()
           }
         }

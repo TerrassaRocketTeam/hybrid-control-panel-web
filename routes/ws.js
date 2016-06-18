@@ -1,6 +1,14 @@
 
 'use strict' // eslint-disable-line
 
+
+// CONFIGURATION
+// Port 0 and 3 do not work
+const valveDigitalOut = 2 // 0
+const continuityDigitalOut = 0 // 1 <-- this port does not work
+const ignitorStartDigitalOut = 1 // 2
+// END CONFIGURATION
+
 const SerialDataProcess = require('./serialDataProcess')
 const checkUser = require('./checkUser')
 
@@ -40,6 +48,7 @@ module.exports = (io) => {
             },
             emitStatus,
             writeToFile: `data${(new Date()).toISOString()}.dat`,
+            checkLaunching: () => (launching),
           }
         )
 
@@ -91,9 +100,9 @@ module.exports = (io) => {
         timerObj = setInterval(() => {
           timer++
           if (timer >= 0 && timer < 4) {
-            sdp.activateDigitalOut(2)
+            sdp.activateDigitalOut(ignitorStartDigitalOut)
           } else {
-            sdp.deactivateDigitalOut(2)
+            sdp.deactivateDigitalOut(ignitorStartDigitalOut)
           }
           io.emit('timer', timer)
         }, 1000)
@@ -110,7 +119,7 @@ module.exports = (io) => {
       if (checkUser(data.user).is && launching) {
         launching = false
         clearInterval(timerObj)
-        sdp.deactivateDigitalOut(2)
+        sdp.deactivateDigitalOut(ignitorStartDigitalOut)
 
         emitStatus(io)
       } else if (!launching) {
@@ -132,9 +141,10 @@ module.exports = (io) => {
 
     socket.on('openValve', (data) => {
       if (checkUser(data.user).is) {
-        sdp.activateDigitalOut(3)
+        console.log('activateDO', valveDigitalOut)
+        sdp.activateDigitalOut(valveDigitalOut)
         setTimeout(() => {
-          sdp.deactivateDigitalOut(3)
+          sdp.deactivateDigitalOut(valveDigitalOut)
           valveOpened = false
           emitStatus(io)
         }, 2000)
@@ -147,7 +157,7 @@ module.exports = (io) => {
 
     socket.on('closeValve', (data) => {
       if (checkUser(data.user).is) {
-        sdp.deactivateDigitalOut(3)
+        sdp.deactivateDigitalOut(valveDigitalOut)
         emitStatus(io)
         valveOpened = false
       } else {
@@ -155,15 +165,15 @@ module.exports = (io) => {
       }
     })
 
-    socket.on('checkIgnitor', (data) => {
-      if (checkUser(data.user).is) {
-        sdp.activateDigitalOut(1)
-        setTimeout(() => {
-          sdp.deactivateDigitalOut(1)
-        }, 2000)
-      } else {
-        socket.emit('appError', { msg: 'Not authorized' })
-      }
-    })
+    // socket.on('checkIgnitor', (data) => {
+    //   if (checkUser(data.user).is) {
+    //     sdp.activateDigitalOut(continuityDigitalOut)
+    //     setTimeout(() => {
+    //       sdp.deactivateDigitalOut(continuityDigitalOut)
+    //     }, 2000)
+    //   } else {
+    //     socket.emit('appError', { msg: 'Not authorized' })
+    //   }
+    // })
   })
 }

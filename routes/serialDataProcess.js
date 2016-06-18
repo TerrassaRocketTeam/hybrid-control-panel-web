@@ -11,6 +11,7 @@ module.exports = function SerialDataProcess (comPort, options) {
   const errorCb = options.errorCb
   const emitStatus = options.emitStatus
   const writeToFile = options.writeToFile
+  const checkLaunching = options.checkLaunching
 
   /* Configuration */
   // 1 -> Pressure 1
@@ -36,11 +37,12 @@ module.exports = function SerialDataProcess (comPort, options) {
   const self = this
 
   const checkIgnitor = (val) => { this.ignitorChecked = val }
+  const ignitorCheckedFun = () => (this.ignitorChecked)
   const setLastTime = (val) => { this.lastTime = val }
 
   const dparser = dI155parser(
     sampleRate, digitalChannel, ignitorTreshold, emitStatus, resultLength, gain,
-    this.ignitorChecked, checkIgnitor, this.lastTime, setLastTime
+    ignitorCheckedFun, checkIgnitor, this.lastTime, setLastTime, checkLaunching
   )
 
   const digitalOut = [0, 0, 0, 0]
