@@ -14,7 +14,8 @@
     "build-react-client": "webpack",
     "watch-react-client": "cross-env PROD=0 webpack --watch",
     "build": "parallelshell \"npm run build-react-server\" \"npm run build-react-client\"",
-    "watch": "parallelshell \"npm run watch-react-server\" \"npm run watch-react-client\""
+    "watch": "parallelshell \"npm run watch-react-server\" \"npm run watch-react-client\"",
+    "postinstall": "npm run build"
   },
   "author": "Pep Rodeja",
   "license": "MIT",

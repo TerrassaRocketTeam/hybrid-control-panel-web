@@ -27,10 +27,16 @@ valve and reading data from all sensors
 - 3. Download this program with git or as a zip
 - 4. Open a console (in windows search for "cmd")
 - 5. Navigate to the directory of the project using `cd "C:\path\to your directory\hybrid-control-panel-web"`
-- 6. type `npm install` (you'll need internet) (maybe there are some warnings, generally it's safe to ignore them)
-- 7. type `npm run build`
-- 8. type `npm start`
+- 6. type `npm install` (you'll need internet) (maybe there are some warnings, generally it's safe to ignore them) (`npm run build` will be runned automatically)
+- 7. type `npm start`
 
 ##### Connect to the program
 - 9. Open your favorite browser (chrome is recomended) and go to `localhost:5000`
 - 10. The default password is `previsió`. After logging in, you can unlock the other controls by pressing down control
+
+##### Develop and debug
+- 11. If debug is needed, add a .env file to the root with the following content:
+```
+NODE_ENV=development
+```
+- 12. Run `npm run watch` to continuosly compile the files. (use `npm run build` to compile the minified and production files)
