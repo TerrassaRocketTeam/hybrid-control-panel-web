@@ -141,7 +141,6 @@ module.exports = (io) => {
 
     socket.on('openValve', (data) => {
       if (checkUser(data.user).is) {
-        console.log('activateDO', valveDigitalOut)
         sdp.activateDigitalOut(valveDigitalOut)
         setTimeout(() => {
           sdp.deactivateDigitalOut(valveDigitalOut)
