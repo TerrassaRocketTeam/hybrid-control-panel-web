@@ -29,4 +29,5 @@ module.exports = {
   disablePressure1Gauge: false, // Does not display the gauge
   disablePressure2Gauge: false, // Does not display the gauge
   disableLoadGauge: false, // Does not display the gauge
+  pass: 'previsió',
 }

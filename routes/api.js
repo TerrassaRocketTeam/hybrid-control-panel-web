@@ -5,6 +5,7 @@ const express = require('express')
 const serial = require('serialport')
 const uuid = require('node-uuid')
 const md5 = require('md5')
+const conf = require('../conf')
 
 const checkUser = require('./middleware/checkUser')
 
@@ -46,7 +47,7 @@ router.post('/login', (req, res) => {
   const tokenI = global.tokens.findIndex((tk) => (tk.token === token))
   if (tokenI > -1) {
     global.tokens.splice(tokenI, 1)
-    if (pass === md5(`previsió${token}`)) {
+    if (pass === md5(`${conf.pass}${token}`)) {
       const user = {
         type: 'logedin',
         logedinAt: new Date(),

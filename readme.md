@@ -34,7 +34,7 @@ valve and reading data from all sensors
 
 ##### Connect to the program
 - 9. Open your favorite browser (chrome is recomended) and go to `localhost:5000`
-- 10. The default password is `previsió`. After logging in, you can unlock the other controls by pressing down control
+- 10. The default password is `previsió`. After logging in, you can unlock the other controls by pressing down control. The password can be changed in cong.js
 
 ##### Configure
 - 11. See conf.js to change the configuration of the software. Some changes may rquire restart of the server or `npm run build` to be executed (or both).
