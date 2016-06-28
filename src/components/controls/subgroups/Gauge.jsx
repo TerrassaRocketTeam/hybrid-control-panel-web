@@ -25,6 +25,7 @@ class Guage extends React.Component {
           plotBackgroundImage: null,
           plotBorderWidth: 0,
           plotShadow: false,
+          animation: false,
         },
 
         title: {
