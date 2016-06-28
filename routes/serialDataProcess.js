@@ -6,6 +6,7 @@ const fs = require('fs')
 const serialport = require('serialport')
 const SerialPort = serialport.SerialPort
 const dI155parser = require('./DI155parser')
+const conf = require('../conf')
 
 module.exports = function SerialDataProcess (comPort, options) {
   const errorCb = options.errorCb
@@ -18,10 +19,10 @@ module.exports = function SerialDataProcess (comPort, options) {
   // 2 -> Pressure 2
   // 3 -> Load
   // 4 -> Continuity
-  const gain = ['100', '100', '011', '000'] // Gain for each channel
-  const pos = ['0000', '0001', '0010', '0011'] // Number of the channel
-  const sampleRate = 500 // Hz per channel
-  const ignitorTreshold = 5
+  const gain = conf.gain
+  const pos = conf.pos
+  const sampleRate = conf.sampleRate
+  const ignitorTreshold = conf.ignitorTreshold
   /* Finish configuration */
 
   // Configuration derivate calculations

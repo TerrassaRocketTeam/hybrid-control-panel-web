@@ -1,18 +1,18 @@
 
 'use strict' // eslint-disable-line
 
+const SerialDataProcess = require('./serialDataProcess')
+const checkUser = require('./checkUser')
+const conf = require('../conf')
 
 // CONFIGURATION
 // Port 0 and 3 do not work
-const valveDigitalOut = 2 // 0
-const continuityDigitalOut = 0 // 1 <-- this port does not work
-const ignitorStartDigitalOut = 1 // 2
+const valveDigitalOut = conf.valveDigitalOut // 0
+const continuityDigitalOut = conf.continuityDigitalOut // 1 <-- this port does not work
+const ignitorStartDigitalOut = conf.ignitorStartDigitalOut // 2
 
-const updateTime = 200 // Time in milliseconds
+const updateTime = conf.updateTime // Time in milliseconds
 // END CONFIGURATION
-
-const SerialDataProcess = require('./serialDataProcess')
-const checkUser = require('./checkUser')
 
 module.exports = (io) => {
   let sdp

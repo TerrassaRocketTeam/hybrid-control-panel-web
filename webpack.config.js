@@ -4,6 +4,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const packge = require('./package.json')
+const conf = require('./conf')
 
 // https://github.com/halt-hammerzeit/webpack-isomorphic-tools
 const WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin')
@@ -35,6 +36,9 @@ const configurations = [
         'process.env': {
           NODE_ENV: '"production"',
           version: `'${packge.version}'`,
+          disablePressure1Gauge: conf.disablePressure1Gauge,
+          disablePressure2Gauge: conf.disablePressure2Gauge,
+          disableLoadGauge: conf.disableLoadGauge,
         },
       }),
       new webpack.optimize.UglifyJsPlugin({
@@ -73,6 +77,9 @@ const configurations = [
         'process.env': {
           NODE_ENV: '"development"',
           version: `'${packge.version}'`,
+          disablePressure1Gauge: conf.disablePressure1Gauge,
+          disablePressure2Gauge: conf.disablePressure2Gauge,
+          disableLoadGauge: conf.disableLoadGauge,
         },
       }),
       // new webpack.HotModuleReplacementPlugin(),
@@ -81,7 +88,7 @@ const configurations = [
   },
 ]
 
-module.exports = configurations.filter((conf, i) => {
+module.exports = configurations.filter((config, i) => {
   if (i === 0) {
     return process.env.PROD !== '0'
   } else if (i === 1) {

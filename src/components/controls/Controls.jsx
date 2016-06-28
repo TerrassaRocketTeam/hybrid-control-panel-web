@@ -117,18 +117,27 @@ class Controls extends React.Component {
         <Paper style={style.container}>
           <div style={style.horitzontalContainer}>
             <div style={style.column}>
-              <Gauge
-                value={(this.props.lastData || [0, 0, 0, 0])[3]}
-                title="Load"
-                units="N"
-                min={0}
-                max={250}
-              />
-              <RaisedButton
-                secondary label={ 'Tare' }
-                style={{ marginBottom: 20 }}
-                onClick={this.props.handleTare}
-              />
+              {(() => {
+                if (process.env.disableLoadGauge === false) {
+                  return (
+                    <div>
+                      <Gauge
+                        value={(this.props.lastData || [0, 0, 0, 0])[3]}
+                        title="Load"
+                        units="N"
+                        min={0}
+                        max={250}
+                      />
+                      <RaisedButton
+                        secondary label={ 'Tare' }
+                        style={{ marginBottom: 20 }}
+                        onClick={this.props.handleTare}
+                      />
+                    </div>
+                  )
+                }
+                return null
+              })()}
             </div>
             <div style={Object.assign({}, style.column, { alignSelf: 'baseline' })}>
               <LaunchControls
@@ -142,22 +151,37 @@ class Controls extends React.Component {
               />
             </div>
             <div style={style.column} >
-              <Gauge
-                value={(this.props.lastData || [0, 0])[1]}
-                title="Pressure"
-                units="bar"
-                min={0}
-                max={100}
-              />
+              {(() => {
+                if (process.env.disablePressure1Gauge === false) {
+                  return (
+                    <Gauge
+                      value={(this.props.lastData || [0, 0])[1]}
+                      title="Pressure"
+                      units="bar"
+                      min={0}
+                      max={100}
+                    />
+                  )
+                }
+                return null
+              })()}
             </div>
             <div style={style.column}>
-              <Gauge
-                value={(this.props.lastData || [0, 0, 0])[2]}
-                title="Pressure"
-                units="bar"
-                min={0}
-                max={100}
-              />
+              {(() => {
+                console.log('process.env.disablePressure2Gauge', process.env.disablePressure2Gauge)
+                if (process.env.disablePressure2Gauge === false) {
+                  return (
+                    <Gauge
+                      value={(this.props.lastData || [0, 0, 0])[2]}
+                      title="Pressure"
+                      units="bar"
+                      min={0}
+                      max={100}
+                    />
+                  )
+                }
+                return null
+              })()}
             </div>
           </div>
           <div style={style.horitzontalContainer}>

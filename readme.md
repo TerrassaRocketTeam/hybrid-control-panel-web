@@ -8,6 +8,8 @@ This dataloger has this sensors conected:
 - A2 -> Pressure sensor 2
 - A3 -> Load cell
 - A4 -> Continuity check
+
+The following can be configured in conf.js
 - Do1 -> Continuity check trigger
 - Do2 -> Ignitor
 - Do3 -> Gas electrovalve
@@ -34,9 +36,12 @@ valve and reading data from all sensors
 - 9. Open your favorite browser (chrome is recomended) and go to `localhost:5000`
 - 10. The default password is `previsió`. After logging in, you can unlock the other controls by pressing down control
 
+##### Configure
+- 11. See conf.js to change the configuration of the software. Some changes may rquire restart of the server or `npm run build` to be executed (or both).
+
 ##### Develop and debug
-- 11. If debug is needed, add a .env file to the root with the following content:
+- 12. If debug is needed, add a .env file to the root with the following content:
 ```
 NODE_ENV=development
 ```
-- 12. Run `npm run watch` to continuosly compile the files. (use `npm run build` to compile the minified and production files)
+- 13. Run `npm run watch` to continuosly compile the files. (use `npm run build` to compile the minified and production files)
