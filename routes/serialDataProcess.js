@@ -115,7 +115,7 @@ module.exports = function SerialDataProcess (comPort, options) {
       } else if (i === 2) {
         return Math.round((item * (140 / 9.981) + 0.012 - self.tare[1]) * 10000) / 10000 // D105
       } else if (i === 3) {
-        return Math.round((21.842709579 * item - self.tare[2]) * 10000) / 10000
+        return Math.round((-21.842709579 * item - self.tare[2]) * 10000) / 10000
       }
       return Math.round((item) * 10000) / 10000
     }))
