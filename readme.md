@@ -44,4 +44,5 @@ valve and reading data from all sensors
 ```
 NODE_ENV=development
 ```
+If debug mode is on, the ability to clik `CNTRL+H` in the client will be added. This will display a history of actions. Also, the console errors will now be correctly referenced to the correct file and line.
 - 13. Run `npm run watch` to continuosly compile the files. (use `npm run build` to compile the minified and production files)
