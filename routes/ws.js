@@ -7,6 +7,8 @@
 const valveDigitalOut = 2 // 0
 const continuityDigitalOut = 0 // 1 <-- this port does not work
 const ignitorStartDigitalOut = 1 // 2
+
+const updateTime = 200 // Time in milliseconds
 // END CONFIGURATION
 
 const SerialDataProcess = require('./serialDataProcess')
@@ -55,8 +57,8 @@ module.exports = (io) => {
         sdp.onData = (err, newData) => {
           lastData.push(newData)
 
-          if (lastSendTime !== Math.floor((new Date()) / 100)) {
-            lastSendTime = Math.floor((new Date()) / 100)
+          if (lastSendTime !== Math.floor((new Date()) / updateTime)) {
+            lastSendTime = Math.floor((new Date()) / updateTime)
             io.emit('serialData',
               lastData
               .reduce(
