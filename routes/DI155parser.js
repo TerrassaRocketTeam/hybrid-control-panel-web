@@ -51,7 +51,7 @@ module.exports = function DI155Parser (
           final.push(this.elem)
         }
         this.elem = [time]
-        time += 1 / (sampleRate * gain.length)
+        time += 1 / sampleRate
         setLastTime(time)
         this.isFirstPart = true
         this.col = 1
