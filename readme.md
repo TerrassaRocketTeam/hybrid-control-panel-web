@@ -1,6 +1,8 @@
 TRT Hybrid Control Panel
 ------------------------
 
+![Captura de pantalla](https://acmqpw.dm2301.livefilestore.com/y4mh6A37kR59YbMEQCGbQQee1NtKzr4whl1q5w4Fnlf4QSEUW2vheHP6_bgukuvgWm8iK17o6HDpfdLpznhdmj80Z3Bvm6RSp-T9-WPfEQNWpbHSP804o16SW8OIcz21Rx10jyQ8GR2OutHhW-vItGYUXvFXXBVqFE1QdGFveu_H-P9vjndGtgOFx-6E3hRIwMcui25zkYj9ylvVcq1xhnW6A?width=1673&height=871&cropmode=none)
+
 This software connects via serial to a DI-155 dataloger.
 
 This dataloger has this sensors conected:
